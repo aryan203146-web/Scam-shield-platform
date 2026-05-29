@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/scam-shield-platform/', // Change this if your GitHub repo name is different
+  base: '/Scam-shield-platform/', // Must match exact GitHub repo name (capital S)
   plugins: [
     react(),
     tailwindcss(),
