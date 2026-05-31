@@ -5,6 +5,7 @@ import WebsiteDetector from './components/WebsiteDetector';
 import VoiceScamDetector from './components/VoiceScamDetector';
 import RiskScoreDashboard from './components/RiskScoreDashboard';
 import ScamShieldSimulator from './components/ScamShieldSimulator';
+import MediaAuditor from './components/MediaAuditor';
 import { useSpeech } from './hooks/useSpeech';
 import { 
   FileText, 
@@ -89,39 +90,50 @@ export default function App() {
           <div className="lg:col-span-7 flex flex-col gap-6">
             
             {/* Tabs Selector */}
-            <div className="bg-[#121217] border border-zinc-800 p-1.5 rounded-xl flex gap-1 shadow-md">
+            <div className="bg-[#121217] border border-zinc-800 p-1.5 rounded-xl flex gap-1 shadow-md flex-wrap sm:flex-nowrap">
               <button
                 onClick={() => { setActiveTab('message'); setAnalysisResult(null); stop(); }}
-                className={`flex-1 py-3 px-2 rounded-lg text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 ${
+                className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
                   activeTab === 'message'
-                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.2)]'
+                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.25)]'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-zinc-900/50'
                 }`}
               >
-                <FileText size={16} />
-                SMS Analyzer
+                <FileText size={15} />
+                <span>SMS Analyser</span>
               </button>
               <button
                 onClick={() => { setActiveTab('website'); setAnalysisResult(null); stop(); }}
-                className={`flex-1 py-3 px-2 rounded-lg text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 ${
+                className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
                   activeTab === 'website'
-                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.2)]'
+                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.25)]'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-zinc-900/50'
                 }`}
               >
-                <Globe size={16} />
-                URL Detector
+                <Globe size={15} />
+                <span>URL Detector</span>
               </button>
               <button
                 onClick={() => { setActiveTab('voice'); setAnalysisResult(null); stop(); }}
-                className={`flex-1 py-3 px-2 rounded-lg text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 ${
+                className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
                   activeTab === 'voice'
-                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.2)]'
+                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.25)]'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-zinc-900/50'
                 }`}
               >
-                <PhoneCall size={16} />
-                Voice Scan
+                <PhoneCall size={15} />
+                <span>Voice Scan</span>
+              </button>
+              <button
+                onClick={() => { setActiveTab('deepfake'); setAnalysisResult(null); stop(); }}
+                className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
+                  activeTab === 'deepfake'
+                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.25)]'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-zinc-900/50'
+                }`}
+              >
+                <Sparkles size={15} />
+                <span>AI Media Scan</span>
               </button>
             </div>
 
@@ -135,6 +147,9 @@ export default function App() {
               )}
               {activeTab === 'voice' && (
                 <VoiceScamDetector onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
+              )}
+              {activeTab === 'deepfake' && (
+                <MediaAuditor onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
               )}
             </div>
 
