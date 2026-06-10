@@ -31,6 +31,23 @@ export default function App() {
   const [elderlyMode, setElderlyMode] = useState(false);
   const [activeAlert, setActiveAlert] = useState(null);
   const { speak, stop } = useSpeech();
+  const [bgMonitoring, setBgMonitoring] = useState(false);
+  const [incomingCallTrigger, setIncomingCallTrigger] = useState(null);
+
+  // Background call interception simulator
+  useEffect(() => {
+    let timer;
+    if (bgMonitoring && !incomingCallTrigger && activeTab !== 'livecall') {
+      timer = setTimeout(() => {
+        const choices = ['ftc', 'grandson'];
+        const chosen = choices[Math.floor(Math.random() * choices.length)];
+        setActiveTab('livecall');
+        setIncomingCallTrigger(chosen);
+        setBgMonitoring(false); // Disable monitoring once triggered
+      }, 12000);
+    }
+    return () => clearTimeout(timer);
+  }, [bgMonitoring, incomingCallTrigger, activeTab]);
 
   // Apply or remove elderly mode class to html element
   useEffect(() => {
@@ -162,7 +179,14 @@ export default function App() {
                 <VoiceScamDetector onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
               )}
               {activeTab === 'livecall' && (
-                <LiveCallAnalyzer onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
+                <LiveCallAnalyzer 
+                  onScanComplete={handleScanComplete} 
+                  elderlyMode={elderlyMode}
+                  bgMonitoring={bgMonitoring}
+                  setBgMonitoring={setBgMonitoring}
+                  incomingCallTrigger={incomingCallTrigger}
+                  onResetIncomingTrigger={() => setIncomingCallTrigger(null)}
+                />
               )}
               {activeTab === 'deepfake' && (
                 <MediaAuditor onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
@@ -173,6 +197,8 @@ export default function App() {
             <ScamShieldSimulator 
               onTriggerAlert={handleTriggerAlert} 
               activeAlert={activeAlert} 
+              bgMonitoring={bgMonitoring}
+              setBgMonitoring={setBgMonitoring} 
             />
 
           </div>

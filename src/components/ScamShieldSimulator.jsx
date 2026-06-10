@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield, Sparkles, MessageSquare, Globe, PhoneCall, AlertTriangle } from 'lucide-react';
 
-export default function ScamShieldSimulator({ onTriggerAlert, activeAlert }) {
+export default function ScamShieldSimulator({ onTriggerAlert, activeAlert, bgMonitoring = false, setBgMonitoring = () => {} }) {
   const handleSimulate = (type) => {
     let alertData = {};
     if (type === 'sms') {
@@ -119,6 +119,27 @@ export default function ScamShieldSimulator({ onTriggerAlert, activeAlert }) {
             <span className="text-[10px] font-mono text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20 group-hover:bg-amber-400 group-hover:text-black transition-all">
               VOICE
             </span>
+          </button>
+        </div>
+
+        {/* Background Interceptor Toggler */}
+        <div className="bg-zinc-950 p-2.5 rounded-lg border border-zinc-900 flex justify-between items-center mt-3">
+          <div className="flex items-center gap-2">
+            <span className={`w-2 h-2 rounded-full ${bgMonitoring ? 'bg-emerald-500 animate-ping' : 'bg-slate-500'}`}></span>
+            <div>
+              <span className="text-[10px] font-bold text-slate-300 block">Call Intercept Daemon</span>
+              <span className="text-[8px] text-slate-500 block">Auto-trigger incoming calls (12s countdown)</span>
+            </div>
+          </div>
+          <button
+            onClick={() => setBgMonitoring(!bgMonitoring)}
+            className={`px-2 py-1 rounded text-[8px] font-mono font-bold tracking-wide uppercase transition-all duration-200 cursor-pointer ${
+              bgMonitoring
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-zinc-900 text-slate-400 border border-zinc-800 hover:border-zinc-700'
+            }`}
+          >
+            {bgMonitoring ? 'ACTIVE' : 'START'}
           </button>
         </div>
 

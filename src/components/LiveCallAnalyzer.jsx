@@ -83,7 +83,14 @@ const SCENARIOS = [
   }
 ];
 
-export default function LiveCallAnalyzer({ onScanComplete, elderlyMode }) {
+export default function LiveCallAnalyzer({ 
+  onScanComplete, 
+  elderlyMode,
+  bgMonitoring = false,
+  setBgMonitoring = () => {},
+  incomingCallTrigger = null,
+  onResetIncomingTrigger = () => {}
+}) {
   const [status, setStatus] = useState('idle'); // idle, ringing, active, ended
   const [scenario, setScenario] = useState(null);
   const [seconds, setSeconds] = useState(0);
@@ -107,6 +114,19 @@ export default function LiveCallAnalyzer({ onScanComplete, elderlyMode }) {
     if (timerRef.current) clearInterval(timerRef.current);
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   };
+
+  // Listen for incoming call trigger from background monitoring
+  useEffect(() => {
+    if (incomingCallTrigger) {
+      const match = SCENARIOS.find(s => s.id === incomingCallTrigger);
+      if (match) {
+        triggerIncomingCall(match);
+      }
+      if (onResetIncomingTrigger) {
+        onResetIncomingTrigger();
+      }
+    }
+  }, [incomingCallTrigger]);
 
   // Ringing effect oscilliator fallback (simulated ring tone)
   const playRingSound = () => {
@@ -352,6 +372,27 @@ export default function LiveCallAnalyzer({ onScanComplete, elderlyMode }) {
             </div>
           </div>
 
+          {/* Background Interceptor Toggler */}
+          <div className="bg-zinc-950 p-3 rounded-lg border border-zinc-900 flex justify-between items-center mt-1">
+            <div className="flex items-center gap-2">
+              <span className={`w-2.5 h-2.5 rounded-full ${bgMonitoring ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'}`}></span>
+              <div>
+                <span className="text-xs font-bold text-slate-300 block">Daemon Background Monitor</span>
+                <span className="text-[9px] text-slate-500 block">Auto-intercepts call probes (12s countdown)</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setBgMonitoring(!bgMonitoring)}
+              className={`px-3 py-1.5 rounded text-[10px] font-mono font-bold tracking-wide uppercase transition-all duration-200 cursor-pointer ${
+                bgMonitoring
+                  ? 'bg-emerald-600 text-white shadow-sm animate-pulse'
+                  : 'bg-zinc-900 text-slate-400 border border-zinc-800 hover:border-zinc-700'
+              }`}
+            >
+              {bgMonitoring ? 'MONITORING ACTIVE' : 'ENABLE DAEMON'}
+            </button>
+          </div>
+ 
           <div className="border-t border-zinc-800/80 pt-4 text-center mt-2">
             <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest flex items-center justify-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
