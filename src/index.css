@@ -259,3 +259,54 @@
   animation: marquee 35s linear infinite;
 }
 
+/* Call Simulator & Warning Animations */
+@keyframes warning-flash {
+  0%, 100% { 
+    background-color: rgba(239, 68, 68, 0);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+  50% { 
+    background-color: rgba(239, 68, 68, 0.15); 
+    border-color: rgba(239, 68, 68, 0.8); 
+  }
+}
+
+.animate-warning-flash {
+  animation: warning-flash 1s ease-in-out infinite;
+}
+
+@keyframes green-pulse {
+  0% { 
+    transform: scale(0.95); 
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); 
+  }
+  70% { 
+    transform: scale(1); 
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); 
+  }
+  100% { 
+    transform: scale(0.95); 
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); 
+  }
+}
+
+.animate-green-pulse {
+  animation: green-pulse 2s infinite;
+}
+
+@keyframes red-border-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); 
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.6); 
+    border-color: rgba(239, 68, 68, 0.8);
+  }
+}
+
+.animate-red-border {
+  animation: red-border-glow 1.5s infinite;
+}
+
+

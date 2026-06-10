@@ -6,6 +6,7 @@ import VoiceScamDetector from './components/VoiceScamDetector';
 import RiskScoreDashboard from './components/RiskScoreDashboard';
 import ScamShieldSimulator from './components/ScamShieldSimulator';
 import MediaAuditor from './components/MediaAuditor';
+import LiveCallAnalyzer from './components/LiveCallAnalyzer';
 import { useSpeech } from './hooks/useSpeech';
 import { 
   FileText, 
@@ -19,7 +20,8 @@ import {
   Sparkles,
   AlertOctagon,
   CornerDownRight,
-  ShieldCheck
+  ShieldCheck,
+  Phone
 } from 'lucide-react';
 import './App.css';
 
@@ -125,6 +127,17 @@ export default function App() {
                 <span>Voice Scan</span>
               </button>
               <button
+                onClick={() => { setActiveTab('livecall'); setAnalysisResult(null); stop(); }}
+                className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
+                  activeTab === 'livecall'
+                    ? 'bg-indigo-600 text-white shadow-[0_4px_12px_rgba(99,102,241,0.25)]'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-zinc-900/50'
+                }`}
+              >
+                <Phone size={15} />
+                <span>Live Call</span>
+              </button>
+              <button
                 onClick={() => { setActiveTab('deepfake'); setAnalysisResult(null); stop(); }}
                 className={`flex-1 py-3 px-2 rounded-lg text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-all duration-200 min-w-[80px] ${
                   activeTab === 'deepfake'
@@ -147,6 +160,9 @@ export default function App() {
               )}
               {activeTab === 'voice' && (
                 <VoiceScamDetector onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
+              )}
+              {activeTab === 'livecall' && (
+                <LiveCallAnalyzer onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
               )}
               {activeTab === 'deepfake' && (
                 <MediaAuditor onScanComplete={handleScanComplete} elderlyMode={elderlyMode} />
